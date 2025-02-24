@@ -1,12 +1,10 @@
-# license-plates-api-docs
-
 # License Plates API Documentation 🚗
 Interactive API documentation for the License Plates API.
 This repository hosts the **License Plates API** documentation using Swagger UI. 
 
 ## 🔹 Live Documentation
 Access the interactive API docs here:  
-🔗 [Your GitHub Pages URL](https://yourusername.github.io/license-plates-api-docs/)
+🔗 [GitHub Pages URL](https://yourusername.github.io/license-plates-api-docs/)
 
 ## 📌 API Overview
 The API allows users to:
