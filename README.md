@@ -4,7 +4,7 @@ This repository hosts the **License Plates API** documentation using Swagger UI.
 
 ## 🔹 Live Documentation
 Access the interactive API docs here:  
-🔗 [GitHub Pages URL](https://yourusername.github.io/license-plates-api-docs/)
+🔗 [GitHub Pages URL](https://anaritagomes.github.io/license-plates-api-docs/)
 
 ## 📌 API Overview
 The API allows users to:
