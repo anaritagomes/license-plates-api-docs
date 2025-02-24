@@ -1,6 +1,6 @@
 window.onload = function() {
   const ui = SwaggerUIBundle({
-    url: "api-docs.yaml", // Loads the OpenAPI spec
+    url: "api-docs.yaml",  // <-- Ensure this matches your file name
     dom_id: '#swagger-ui',
     deepLinking: true,
     presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
