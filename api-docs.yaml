@@ -1,17 +1,47 @@
 openapi: 3.0.0
 info:
-  title: License Plates API
-  description: API for managing vehicle license plates in the BCA database.
-  version: 1.0.0
+  title: License Plates API 🚗
+  description: |
+    The License Plates API allows users to manage vehicle registration records in BCA’s database.
+
+    ### Features:
+    - 🔍 Retrieve all registered license plates
+    - 📝 Add a new vehicle with `make`, `VIN`, and `registration_date`
+    - ✏️ Update an existing license plate's details
+    - 🗑️ Remove a vehicle from the database
+
+    ### Use Cases:
+    - **Fleet Management Systems:** Maintain up-to-date vehicle registration.
+    - **Law Enforcement:** Retrieve vehicle details based on license plates.
+    - **Car Dealerships:** Manage used vehicle inventories efficiently.
+
+  version: "1.0.0"
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
 servers:
   - url: https://api.bca.com
-    description: Production server
+    description: Production Server
+  - url: https://staging.api.bca.com
+    description: Staging Environment (For testing)
+  - url: http://localhost:3000
+    description: Local Development Server
+
+tags:
+  - name: License Plates
+    description: Endpoints for managing license plates.
+  - name: Vehicles
+    description: General vehicle-related operations.
+  - name: FAQs
+    description: Frequently asked questions about the API.
+
 paths:
   /licenseplates:
     get:
       summary: Retrieve all license plates
-      description: Returns a list of all vehicle license plates in BCA’s database.
-      operationId: getLicensePlates
+      tags:
+        - License Plates
       responses:
         "200":
           description: A list of license plates.
@@ -21,17 +51,11 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/LicensePlate"
-        "500":
-          description: Server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
 
     post:
       summary: Add a new license plate
-      description: Adds a new vehicle to the license plates database.
-      operationId: addLicensePlate
+      tags:
+        - License Plates
       requestBody:
         required: true
         content:
@@ -46,28 +70,26 @@ paths:
               schema:
                 $ref: "#/components/schemas/LicensePlate"
         "400":
-          description: Invalid input data.
+          description: Invalid request format.
           content:
             application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+              examples:
+                missing_fields:
+                  value:
+                    error: "Missing required fields: make, vin, registration_date"
+                invalid_date:
+                  value:
+                    error: "Invalid date format. Expected YYYY-MM-DD."
 
   /licenseplates/{id}:
     put:
       summary: Update a license plate
-      description: Modify details of an existing vehicle using its ID.
-      operationId: updateLicensePlate
+      tags:
+        - License Plates
       parameters:
         - name: id
           in: path
           required: true
-          description: The unique ID of the license plate.
           schema:
             type: string
       requestBody:
@@ -83,34 +105,25 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LicensePlate"
-        "400":
-          description: Invalid input data.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
         "404":
           description: License plate not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Server error.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "License plate ID not found."
 
     delete:
       summary: Delete a license plate
-      description: Remove a vehicle record using its license plate ID.
-      operationId: deleteLicensePlate
+      tags:
+        - License Plates
       parameters:
         - name: id
           in: path
           required: true
-          description: The unique ID of the license plate.
           schema:
             type: string
       responses:
@@ -121,15 +134,49 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
-        "500":
-          description: Server error.
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "License plate ID not found."
+
+  /faq:
+    get:
+      summary: Frequently Asked Questions
+      tags:
+        - FAQs
+      responses:
+        "200":
+          description: List of FAQs.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Error"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    question:
+                      type: string
+                    answer:
+                      type: string
+              examples:
+                faq:
+                  value:
+                    - question: "Why does 'Try it out' fail?"
+                      answer: "This documentation does not connect to a real API."
+                    - question: "What response format does the API use?"
+                      answer: "All responses are in JSON format."
+                    - question: "How do I authenticate API requests?"
+                      answer: "Use an API key in the 'X-API-Key' header."
 
 components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: "Use your API Key to authenticate requests."
+
   schemas:
     LicensePlate:
       type: object
@@ -165,10 +212,3 @@ components:
           type: string
           format: date
           example: "2010-08-24"
-
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          example: "Invalid request. Check input parameters."
