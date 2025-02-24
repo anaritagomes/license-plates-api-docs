@@ -3,15 +3,66 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Swagger UI</title>
+    <title>BCA License Plate API</title>
     <link rel="stylesheet" type="text/css" href="./swagger-ui.css" />
     <link rel="stylesheet" type="text/css" href="index.css" />
     <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
+
+    <style>
+      /* Ensure the Swagger UI Top Bar is fixed properly */
+      .swagger-ui .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #222; /* Keeps it looking like Swagger UI */
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 100;
+      }
+
+      /* Adjust Swagger UI layout so content doesn't hide behind the top bar */
+      .swagger-ui {
+        padding-top: 60px; /* Pushes content down to avoid hiding behind top bar */
+      }
+
+      /* BCA Logo Container - Ensures it's BELOW the black bar */
+      .bca-logo-container {
+        position: absolute;
+        right: 20px;
+        top: 60px; /* Ensures it sits right below the black bar */
+        z-index: 99; /* Keeps it above the API content */
+        background-color: white; /* Ensures visibility */
+        padding: 5px;
+        border-radius: 5px; /* Adds a slight rounded background */
+      }
+
+      .bca-logo {
+        height: 50px; /* Adjust size if needed */
+        max-width: 100%;
+      }
+    </style>
   </head>
 
   <body>
+    <!-- Swagger UI Top Bar -->
+    <div class="swagger-ui">
+      <div class="topbar"></div>
+    </div>
+
+    <!-- BCA Logo BELOW the black bar -->
+    <div class="bca-logo-container">
+      <a href="https://www.bca.com/pt_PT/" target="_blank">
+        <img src="bca-logo.png" alt="BCA Logo" class="bca-logo">
+      </a>
+    </div>
+
+    <!-- Swagger UI Documentation -->
     <div id="swagger-ui"></div>
+
     <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script src="./swagger-initializer.js" charset="UTF-8"> </script>

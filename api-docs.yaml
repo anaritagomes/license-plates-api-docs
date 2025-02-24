@@ -31,8 +31,6 @@ servers:
 tags:
   - name: License Plates
     description: Endpoints for managing license plates.
-  - name: Vehicles
-    description: General vehicle-related operations.
   - name: FAQs
     description: Frequently asked questions about the API.
 
