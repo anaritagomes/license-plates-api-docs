@@ -4,16 +4,23 @@ info:
   description: |
     The License Plates API allows users to manage vehicle registration records in BCA’s database.
 
-    ### Features:
-    - 🔍 Retrieve all registered license plates
-    - 📝 Add a new vehicle with `make`, `VIN`, and `registration_date`
-    - ✏️ Update an existing license plate's details
-    - 🗑️ Remove a vehicle from the database
+    ### Features
+    - `GET` Retrieve all registered license plates
+    - `POST` Add a new vehicle with `make`, `VIN`, and `registration_date`
+    - `PUT` Update an existing license plate's details
+    - `DELETE` Remove a vehicle from the database
 
-    ### Use Cases:
+    ### Use Cases
     - **Fleet Management Systems:** Maintain up-to-date vehicle registration.
     - **Law Enforcement:** Retrieve vehicle details based on license plates.
-    - **Car Dealerships:** Manage used vehicle inventories efficiently.
+    - **Car Dealerships:** Manage used vehicle inventories.
+
+    ### Rate Limits
+    - Maximum **100 requests per minute** per API key.
+    - Exceeding the limit will result in a `429 Too Many Requests` response.
+
+    ### Additional Help
+    - Please check the [FAQ](#/FAQs) for common questions.
 
   version: "1.0.0"
   license:
@@ -40,9 +47,23 @@ paths:
       summary: Retrieve all license plates
       tags:
         - License Plates
+      parameters:
+        - name: make
+          in: query
+          description: Filter by car manufacturer (e.g., Audi, BMW)
+          required: false
+          schema:
+            type: string
+        - name: registration_year
+          in: query
+          description: Filter by year of registration (YYYY format)
+          required: false
+          schema:
+            type: integer
+            example: 2010
       responses:
         "200":
-          description: A list of license plates.
+          description: A list of license plates matching the query parameters.
           content:
             application/json:
               schema:
@@ -67,6 +88,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/LicensePlate"
+              examples:
+                success:
+                  value:
+                    id: "150"
+                    make: "Audi"
+                    vin: "WAUZ7856UJHI15485"
+                    registration_date: "2010-08-24"
         "400":
           description: Invalid request format.
           content:
@@ -78,6 +106,9 @@ paths:
                 invalid_date:
                   value:
                     error: "Invalid date format. Expected YYYY-MM-DD."
+                duplicate_vin:
+                  value:
+                    error: "A license plate with this VIN already exists."
 
   /licenseplates/{id}:
     put:
@@ -141,6 +172,7 @@ paths:
   /faq:
     get:
       summary: Frequently Asked Questions
+      description: Answers to common developer questions about using the API.
       tags:
         - FAQs
       responses:
@@ -160,10 +192,11 @@ paths:
               examples:
                 faq:
                   value:
-                    - question: "What response format does the API use?"
-                      answer: "All responses are in JSON format."
-                    - question: "How do I authenticate API requests?"
-                      answer: "Use an API key in the 'X-API-Key' header."
+                    - question: "What format should the request body be in?"
+                      answer: "The request body should be in JSON format."
+                    - question: "How do I update an existing license plate?"
+                      answer: "Use the PUT /licenseplates/{id} endpoint and provide the new make, VIN, and registration_date."
+
 
 components:
   securitySchemes:
