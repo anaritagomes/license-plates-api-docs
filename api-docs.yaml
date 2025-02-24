@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: License Plates API 🚗
+  title: BCA License Plates API 🚗
   description: |
     The License Plates API allows users to manage vehicle registration records in BCA’s database.
 
@@ -162,8 +162,6 @@ paths:
               examples:
                 faq:
                   value:
-                    - question: "Why does 'Try it out' fail?"
-                      answer: "This documentation does not connect to a real API."
                     - question: "What response format does the API use?"
                       answer: "All responses are in JSON format."
                     - question: "How do I authenticate API requests?"
